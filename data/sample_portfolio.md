@@ -1,0 +1,121 @@
+# Suprith M — Portfolio
+
+## About
+I am a Senior Product Data Engineer with 3.6 years of experience focused on building scalable data pipelines using Big Data Tech Stack like Spark, Databricks, and Azure Cloud.
+
+## Current Professional Experience — Morgan Stanley from 16-oct-2025 to present
+  - Role: Software Engineer Level 2 
+  - Duration: Oct-2025 to Present
+  - Domain: Banking(Wealth Management Product Technology)
+  - Team: Lending
+  - Project Management Framework: Agle
+  - TechStack: Big Data, Hadoop , Pyspark,Spark ,Shell Scripting, Snowflake WareHouse, Teradata Warehouse, Ibm DB2, MS Sql Server, Bit bucket, Jenkins
+
+
+## Professional Experience — Mbb Labs Pvt Ltd (Product Division, Maybank) from jun-2022 to 15-oct-2025
+  - Role: Senior Product Data Engineer (0.7 years) and Product Data Engineer (2.1 years) and Product Data Engineer Intern (0.9 year)
+  - Duration: 3.5 years (including 8 months internship)
+  - Domain: Banking
+  - Teams: UDL(Universal Data Lake),Profitability Management,BCBS(Basel Committee on Banking Stabilization),Net Zero Carbon Cities
+  - Project Management Framework: Agile and Kanban
+  - I have worked on building large-scale data pipelines, ETL frameworks, and AI-assisted automation tools for data quality, reconciliation, and reporting systems. My work primarily involved Python, PySpark, Hive, Scala, and Oracle, with a focus on performance optimization, data governance, and AI-driven innovation.
+
+## Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)
+ - Project: Cloudera Data Platform (CDP) Migration
+    - Led the migration of critical data workloads from on-premises infrastructure to Cloudera Data Platform (CDP).
+    - Ensured minimal downtime and zero data loss through a phased migration strategy and rigorous validation process.
+    - Implemented optimized Spark, Hive, and Ozone configurations for improved performance and scalability.
+    - Delivered a highly available, scalable architecture capable of supporting future data growth and advanced analytics use cases.
+    - Delivered an alternative solution for BDSQL replacement by testing and signing off the IBM BigSQL utility as the approved replacement
+    - Technologies: Cloudera CDP, Hadoop, Spark, Ozone, Unix.
+ 
+ - Project: Slowly Changing Dimension (SCD) & Recovery Framework
+    - Built data pipelines for maintaining historical dimension data (SCD Type 2).
+    - Improved ETL performance from 2h45m to 16m using architectural optimizations.
+    - Technologies: Python, PySpark, Hive.
+    - Designed an exit-code mechanism and active-passive write strategy for zero downtime.
+
+ - Project: Incremental & Incremental Recovery Framework
+    - Designed and developed a new engine to process only changed data between loads.
+    - Reduced job runtime by 45+ minutes through selective write logic.
+    - Implemented data validation and exclusion configurations for technical columns.
+    - Technologies: Python, PySpark, Hive.
+
+ - Project: Currency & Measures Computation
+    - Developed scalable framework for cross-currency conversions and KPI calculations.
+    - Enhanced performance using Spark caching and configuration-driven computations.
+    - Technologies: Scala, Spark, Hive.
+
+ - Project: Oracle Data Integrator (ODI)
+    - Built and automated ETL pipelines for fact table loads using ODI mappings.
+    - Created outbound automation using Jython + odisqlunload to export data for downstream apps.
+    - Designed error-tracking and metadata extraction modules to simplify debugging.
+
+ - Project: PySpark Data Quality Framework
+    - Migrated PL/SQL-based data quality checks to PySpark.
+    - Implemented checks: duplicates, LOV, not null, referential integrity.
+    - Reduced DQ batch runtime from 30h to 2h15m.
+    - Technologies: Python, PySpark, Hive, HDFS.
+
+ - Project: Reconciliation Framework Engine
+    - Built reconciliation framework for cross-system validation (Teradata ↔ Hive).
+    - Enabled end-to-end reconciliation through balance and attribute-level comparisons.
+    - Technologies: Python, PySpark, Hive, Oracle, Teradata.
+
+ - Project: Data Archival Framework
+    - Created archival framework in Scala and PL/SQL for Hive and Oracle.
+    - Automated truncation and archival logic using config-driven parameters.
+    - Supported partition-based archival for annual data retention.
+
+## Hobby & Open Source Projects
+ - Project: Recursive Job Matching (RJM)
+    - AI-powered resume matcher using Python + Streamlit + Gemini API.
+    - Fetches job data via APIs and compares with uploaded resumes.
+    - Generates detailed feedback reports with download option.
+
+ - Project: Streamlit Custom File Path Loader
+    - Developed a custom Streamlit widget to fetch file metadata.
+    - Uses Tkinter dialog for file upload, maintains session state.
+    - Published to PyPI as Streamlit-Filepath-Loader.
+    
+ - Project: Pandas Consolidation Library
+    - Library for merging and transposing Excel files using Pandas.
+    - Includes error handling, config-based transformations, and Excel writers.
+    - Available on PyPI as Pandas-Consolidated-Loader.
+    
+ - Project: Portfolio Generator and Enhancer
+    - Built a Streamlit-based AI tool to auto-generate and deploy developer portfolios.
+    - Integrates with GitHub, Vercel, BigQuery, and Gemini API for end-to-end automation.
+    - Features profile management, project enhancement, and dynamic deployment.
+
+ - Project: Custom GPT Architecture and Language Model
+    - Designed and trained a custom GPT-like transformer model from scratch using open-source books as the training corpus.
+    - Implemented end-to-end data preprocessing, model architecture, and vocabulary generation pipelines.
+    - Achieved training loss of 0.50 (≈60%) and validation loss of 0.59 (≈55%) within limited training iterations.
+    - Focused on optimizing tokenization, embedding representation, and attention mechanisms for language understanding.
+    - Future Work: Expanding the model for domain-specific RAG (Retrieval-Augmented Generation) by training on user-related documents to enhance contextual Q&A and summarization capabilities.
+    - Technologies: Python, PyTorch, Transformers, Tokenizers, NumPy.
+    - Repo Includes: Preprocessing scripts, architecture design, training dataset, and vocabulary builder.
+
+ - Project: Spark-SQL Optimiser
+    - pyspark open source talks to integrate into official pyspark code base
+    - Developed a SQL optimization framework that analyzes query metadata and automatically rewrites Spark SQL scripts for improved performance.
+    - Metadata Extraction: Reads SQL metadata from Excel configuration files.
+    - Source Analysis (Class 2):
+       - Identifies join keys and potential data skew in source tables.
+       - Detects imbalance across partitions to guide optimization.
+    - Histogram Generation (Class 3):
+       - Classifies columns into skewed and non-skewed categories.
+       - Generates detailed histograms and exports them as PDFs for reference.
+    - Query Optimization (Class 1):
+       - Applies Common Table Expressions (CTEs) and grouped skew handling logic.
+       - Optimizes joins using string concatenation techniques to manage skewed data efficiently.
+       - Outputs an optimized SQL script ready for execution in Spark or Hive.
+    - Impact: Reduces query runtime and mitigates data skew, leading to more balanced distributed processing.
+    - Technologies: Python, PySpark, Spark SQL, Pandas, OpenPyXL, Matplotlib.
+
+## Achievements
+- Google Cloud Innovator Club Member — Earned membership through a competitive Google Generative AI Hackathon, showcasing innovative problem-solving and deep technical expertise in AI-driven solutions.
+- Top Candidate – LLM Agents Hackathon (UC Berkeley RDI) — Recognized among the top participants in the global LLM Agents Hackathon, organized in collaboration with UC Berkeley’s Research, Development & Innovation division and the LLM Agents MOOC.
+- Star Performer Awards — Honored multiple times for outstanding sprint performance, delivering critical features ahead of deadlines with exceptional quality and innovation.
+- Most Dependable Developer” Award — Recognized for reliability, ownership, and consistent delivery of high-performance data engineering solutions across multiple sprints and complex project lifecycles.

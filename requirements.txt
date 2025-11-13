@@ -1,0 +1,10 @@
+numpy<2
+pandas
+pyarrow
+scikit-learn
+sentence-transformers
+faiss-cpu
+fastapi
+uvicorn[standard]
+python-dotenv
+requests
