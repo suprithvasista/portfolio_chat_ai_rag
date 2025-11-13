@@ -12,3 +12,6 @@ __pycache__/
 # IDE settings (optional)
 .vscode/
 .idea/
+
+#unit test file
+test.py
