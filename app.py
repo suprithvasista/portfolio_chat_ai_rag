@@ -1,3 +1,9 @@
+# ============================================================
+# Portfolio RAG API
+#
+# FastAPI + FAISS + NVIDIA Embeddings + NVIDIA LLM
+# ============================================================
+
 import os
 import json
 import time
@@ -6,43 +12,71 @@ import numpy as np
 import faiss
 
 from requests.exceptions import RequestException
+
 from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
+
+from pydantic import BaseModel, Field
+
 from typing import List
+
 from dotenv import load_dotenv
 
 
-# ─────────────────────────────────────────────
-# Load environment variables
-# ─────────────────────────────────────────────
+# ============================================================
+# LOAD ENVIRONMENT VARIABLES
+# ============================================================
 
 load_dotenv()
 
 NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
 
+# LLM used for generating the final answer
 NVIDIA_MODEL = os.getenv(
     "NVIDIA_MODEL",
     "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
 )
 
+# Embedding model used for both indexing and searching
 NVIDIA_EMBED_MODEL = os.getenv(
     "NVIDIA_EMBED_MODEL",
     "nvidia/nemotron-3-embed-1b"
 )
 
+# NVIDIA API endpoints
 EMBED_URL = "https://integrate.api.nvidia.com/v1/embeddings"
 
 CHAT_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 
 
-print("+++ NVIDIA LLM MODEL:", NVIDIA_MODEL)
-print("+++ NVIDIA EMBEDDING MODEL:", NVIDIA_EMBED_MODEL)
-print("+++ NVIDIA API KEY present:", bool(NVIDIA_API_KEY))
+# ============================================================
+# STARTUP LOGGING
+# ============================================================
+
+print("============================================")
+print("Portfolio RAG API")
+print("============================================")
+
+print(
+    "+++ NVIDIA LLM MODEL:",
+    NVIDIA_MODEL
+)
+
+print(
+    "+++ NVIDIA EMBEDDING MODEL:",
+    NVIDIA_EMBED_MODEL
+)
+
+# Never print the actual API key
+print(
+    "+++ NVIDIA API KEY PRESENT:",
+    bool(NVIDIA_API_KEY)
+)
 
 
-# ─────────────────────────────────────────────
-# Load FAISS index and metadata
-# ─────────────────────────────────────────────
+# ============================================================
+# LOAD FAISS INDEX + METADATA
+# ============================================================
 
 try:
 
@@ -61,34 +95,81 @@ try:
 
 except Exception as e:
 
-    print("❌ Failed to load FAISS index:", e)
+    print("❌ Failed to load FAISS index:")
+    print(e)
 
     raise
 
 
-# ─────────────────────────────────────────────
-# FastAPI setup
-# ─────────────────────────────────────────────
+# ============================================================
+# FASTAPI APPLICATION
+# ============================================================
 
 app = FastAPI(
-    title="Portfolio Chatbot",
-    description="RAG chatbot powered by NVIDIA APIs and FAISS",
+    title="Portfolio Chatbot API",
+    description=(
+        "Portfolio RAG chatbot powered by "
+        "NVIDIA Embeddings, FAISS and NVIDIA LLM"
+    ),
     version="1.0.0"
 )
 
 
-# ─────────────────────────────────────────────
-# Request / Response models
-# ─────────────────────────────────────────────
+# ============================================================
+# CORS
+# ============================================================
+#
+# This allows your Flutter Web application to call this API.
+#
+# For development:
+#     allow_origins=["*"]
+#
+# Once your portfolio is deployed, replace "*" with your
+# actual website domain for better security.
+# ============================================================
+
+app.add_middleware(
+    CORSMiddleware,
+
+    allow_origins=["*"],
+
+    allow_credentials=False,
+
+    allow_methods=["*"],
+
+    allow_headers=["*"],
+)
+
+
+# ============================================================
+# REQUEST MODEL
+# ============================================================
 
 class QueryRequest(BaseModel):
 
-    question: str
+    question: str = Field(
+        ...,
+        min_length=1,
+        max_length=2000,
+        description="Question about Suprith's portfolio"
+    )
 
-    top_k: int = 5
+    top_k: int = Field(
+        default=5,
+        ge=1,
+        le=10
+    )
 
-    temperature: float = 0.4
+    temperature: float = Field(
+        default=0.4,
+        ge=0.0,
+        le=1.0
+    )
 
+
+# ============================================================
+# RESPONSE MODEL
+# ============================================================
 
 class QueryResponse(BaseModel):
 
@@ -97,69 +178,71 @@ class QueryResponse(BaseModel):
     sources: List[str]
 
 
-# ─────────────────────────────────────────────
-# Health check
-# ─────────────────────────────────────────────
+# ============================================================
+# HEALTH CHECK
+# ============================================================
 
 @app.get("/")
 def health():
+    """
+    Simple endpoint to check whether the API is running.
+    """
 
     return {
         "status": "ok",
-        "service": "Portfolio RAG API"
+        "service": "Portfolio RAG API",
+        "embedding_model": NVIDIA_EMBED_MODEL,
+        "llm_model": NVIDIA_MODEL,
+        "faiss_vectors": index.ntotal
     }
 
 
-# ─────────────────────────────────────────────
-# NVIDIA Embedding
-# ─────────────────────────────────────────────
+# ============================================================
+# NVIDIA EMBEDDING
+# ============================================================
 
 def get_query_embedding(query: str):
+    """
+    Convert the user's question into an embedding.
+
+    IMPORTANT:
+    We use input_type="query".
+
+    build_index.py uses input_type="passage"
+    for portfolio documents.
+    """
 
     if not NVIDIA_API_KEY:
-
         raise RuntimeError(
             "NVIDIA_API_KEY is not configured."
         )
 
     headers = {
-
-        "Authorization":
-            f"Bearer {NVIDIA_API_KEY}",
-
-        "Content-Type":
-            "application/json"
+        "Authorization": f"Bearer {NVIDIA_API_KEY}",
+        "Content-Type": "application/json",
+        "Accept": "application/json"
     }
 
     payload = {
+        "model": NVIDIA_EMBED_MODEL,
 
-        "model":
-            NVIDIA_EMBED_MODEL,
+        # NVIDIA expects input as a list
+        "input": [query],
 
-        "input":
-            [query],
+        # User question = query
+        "input_type": "query",
 
-        # Query embedding
-        "input_type":
-            "query",
+        "encoding_format": "float",
 
-        "encoding_format":
-            "float",
-
-        "truncate":
-            "END"
+        "truncate": "END"
     }
 
     try:
 
         response = requests.post(
-
             EMBED_URL,
-
             headers=headers,
-
             json=payload,
-
             timeout=60
         )
 
@@ -177,41 +260,55 @@ def get_query_embedding(query: str):
             f"{response.text}"
         )
 
-    result = response.json()
+    try:
+
+        result = response.json()
+
+    except Exception as e:
+
+        raise RuntimeError(
+            f"Invalid JSON from NVIDIA embedding API: {e}"
+        )
 
     data = result.get("data")
 
     if not data:
 
         raise RuntimeError(
-            f"No embedding returned by NVIDIA: "
-            f"{result}"
+            f"No embedding returned by NVIDIA: {result}"
         )
 
+    # Convert embedding to float32 for FAISS
     embedding = np.array(
         [data[0]["embedding"]],
         dtype="float32"
     )
 
-    # Normalize for cosine similarity
+    # Normalize because our FAISS index uses
+    # normalized vectors + Inner Product.
     faiss.normalize_L2(embedding)
 
     return embedding
 
 
-# ─────────────────────────────────────────────
-# FAISS Search
-# ─────────────────────────────────────────────
+# ============================================================
+# FAISS SEARCH
+# ============================================================
 
 def search(query: str, k: int = 5):
+    """
+    Search the portfolio vector database.
 
-    # Protect the API from unreasonable values
+    Returns the most relevant portfolio chunks.
+    """
+
+    # Safety limit
     k = max(1, min(k, 10))
 
-    query_embedding = get_query_embedding(
-        query
-    )
+    # Convert user question to vector
+    query_embedding = get_query_embedding(query)
 
+    # Search FAISS
     distances, indices = index.search(
         query_embedding,
         k
@@ -229,7 +326,7 @@ def search(query: str, k: int = 5):
 
         result = meta[idx].copy()
 
-        # Include similarity score
+        # Similarity score
         result["score"] = float(distance)
 
         results.append(result)
@@ -237,42 +334,60 @@ def search(query: str, k: int = 5):
     return results
 
 
-# ─────────────────────────────────────────────
-# System Prompt
-# ─────────────────────────────────────────────
+# ============================================================
+# SYSTEM PROMPT
+# ============================================================
+#
+# This is intentionally concise.
+#
+# The goal is NOT to make the model repeat the retrieved
+# chunks. It should understand the question and synthesize
+# an answer from the relevant information.
+# ============================================================
 
 SYSTEM_PROMPT = """
-You are PortfolioAssistant, a friendly and factual assistant.
+You are PortfolioAssistant, a friendly and factual assistant
+for Suprith M's professional portfolio.
 
-Rules:
+Use ONLY the information provided in CONTEXT.
 
-1. Use ONLY the given CONTEXT from Suprith M's portfolio.
+Your job is to answer the user's QUESTION, not to repeat or
+dump the retrieved CONTEXT.
 
-2. If the answer isn't found in CONTEXT, say:
-"I’m not sure about that — please check the portfolio or feel free to get in touch with Suprith M."
+Understand the question first, identify the relevant information,
+and synthesize it into a clear, complete, natural response.
 
-3. Do not make up information.
+When multiple relevant pieces of information are available,
+combine them into a coherent answer.
 
-4. When the answer is present in CONTEXT, respond naturally and directly.
+If the question asks for an explanation, explain using the
+available context rather than simply listing names.
 
-5. Do not say things like:
-"Based on the provided context..."
+If the question asks for projects, mention the relevant projects
+and briefly explain them when the context provides enough detail.
+
+Do not invent technologies, responsibilities, achievements,
+dates, companies, project details, or other information.
+
+Do not mention the retrieval process or say:
+"Based on the context..."
 "According to the context..."
-"From the context..."
+"The retrieved information..."
 
-6. Keep answers concise and useful.
+If the answer cannot be determined from the CONTEXT, respond exactly:
 
-7. You may mention relevant technologies, projects,
-experience, skills, education, or other portfolio information
-only when it is present in CONTEXT.
+"I’m not sure about that — please check the portfolio or feel free to get in touch with Suprith M."
 """
 
 
-# ─────────────────────────────────────────────
-# Build RAG prompt
-# ─────────────────────────────────────────────
+# ============================================================
+# BUILD RAG PROMPT
+# ============================================================
 
 def build_prompt(chunks, question):
+    """
+    Creates the final prompt sent to the LLM.
+    """
 
     context_parts = []
 
@@ -283,28 +398,24 @@ def build_prompt(chunks, question):
             f"{chunk['text']}"
         )
 
-    context = "\n\n".join(
-        context_parts
-    )
+    context = "\n\n".join(context_parts)
 
     return f"""
-{SYSTEM_PROMPT}
-
 CONTEXT:
-
 {context}
 
 QUESTION:
-
 {question}
 
-Answer only using the CONTEXT.
+Answer the QUESTION using the CONTEXT.
+Synthesize the information into a useful response.
+Do not simply copy the CONTEXT.
 """
 
 
-# ─────────────────────────────────────────────
-# NVIDIA LLM Generation
-# ─────────────────────────────────────────────
+# ============================================================
+# NVIDIA LLM GENERATION
+# ============================================================
 
 def nvidia_generate(
     prompt,
@@ -313,6 +424,9 @@ def nvidia_generate(
     retries=2,
     backoff=1.5
 ):
+    """
+    Send the RAG prompt to NVIDIA's chat completion API.
+    """
 
     if not NVIDIA_API_KEY:
 
@@ -321,49 +435,40 @@ def nvidia_generate(
         )
 
     headers = {
-
-        "Authorization":
-            f"Bearer {NVIDIA_API_KEY}",
-
-        "Content-Type":
-            "application/json",
-
-        "Accept":
-            "application/json"
+        "Authorization": f"Bearer {NVIDIA_API_KEY}",
+        "Content-Type": "application/json",
+        "Accept": "application/json"
     }
 
     payload = {
 
-        "model":
-            NVIDIA_MODEL,
+        "model": NVIDIA_MODEL,
 
         "messages": [
 
             {
                 "role": "system",
-
-                "content":
-                    "You are PortfolioAssistant, "
-                    "a friendly and factual assistant."
+                "content": SYSTEM_PROMPT
             },
 
             {
                 "role": "user",
-
-                "content":
-                    prompt
+                "content": prompt
             }
+
         ],
 
-        "temperature":
-            temp,
+        "temperature": temp,
 
-        "max_tokens":
-            max_tokens,
+        "max_tokens": max_tokens,
 
-        "stream":
-            False
+        "stream": False
     }
+
+
+    # ========================================================
+    # RETRY LOOP
+    # ========================================================
 
     for attempt in range(
         1,
@@ -373,13 +478,9 @@ def nvidia_generate(
         try:
 
             response = requests.post(
-
                 CHAT_URL,
-
                 headers=headers,
-
                 json=payload,
-
                 timeout=120
             )
 
@@ -400,15 +501,17 @@ def nvidia_generate(
 
             return f"Request error: {e}"
 
+
         print(
             f"[NVIDIA] status="
             f"{response.status_code} "
             f"attempt={attempt}"
         )
 
-        # ─────────────────────────────────────
-        # Success
-        # ─────────────────────────────────────
+
+        # ====================================================
+        # SUCCESS
+        # ====================================================
 
         if response.status_code == 200:
 
@@ -432,9 +535,10 @@ def nvidia_generate(
 
                 return response.text
 
-        # ─────────────────────────────────────
-        # Authentication
-        # ─────────────────────────────────────
+
+        # ====================================================
+        # AUTHENTICATION
+        # ====================================================
 
         elif response.status_code in (
             401,
@@ -447,9 +551,10 @@ def nvidia_generate(
                 "check NVIDIA_API_KEY"
             )
 
-        # ─────────────────────────────────────
-        # Model no longer available
-        # ─────────────────────────────────────
+
+        # ====================================================
+        # MODEL NO LONGER AVAILABLE
+        # ====================================================
 
         elif response.status_code == 410:
 
@@ -459,9 +564,10 @@ def nvidia_generate(
                 "is no longer available."
             )
 
-        # ─────────────────────────────────────
-        # Rate limit
-        # ─────────────────────────────────────
+
+        # ====================================================
+        # RATE LIMIT
+        # ====================================================
 
         elif response.status_code == 429:
 
@@ -482,15 +588,15 @@ def nvidia_generate(
                 "Please try again later."
             )
 
-        # ─────────────────────────────────────
-        # Temporary unavailable
-        # ─────────────────────────────────────
+
+        # ====================================================
+        # TEMPORARILY UNAVAILABLE
+        # ====================================================
 
         elif response.status_code == 503:
 
             print(
-                "[NVIDIA] Model temporarily "
-                "unavailable."
+                "[NVIDIA] Model temporarily unavailable."
             )
 
             if attempt < retries:
@@ -501,9 +607,10 @@ def nvidia_generate(
 
                 continue
 
-        # ─────────────────────────────────────
-        # Other errors
-        # ─────────────────────────────────────
+
+        # ====================================================
+        # OTHER ERROR
+        # ====================================================
 
         else:
 
@@ -519,20 +626,38 @@ def nvidia_generate(
                 f"{response.text[:500]}"
             )
 
+
     return (
         "NVIDIA inference failed after retries."
     )
 
 
-# ─────────────────────────────────────────────
-# Main API route
-# ─────────────────────────────────────────────
+# ============================================================
+# MAIN QUERY ENDPOINT
+# ============================================================
 
 @app.post(
     "/query",
     response_model=QueryResponse
 )
 async def query(req: QueryRequest):
+    """
+    Main RAG endpoint.
+
+    Flutter sends:
+
+    POST /query
+
+    {
+        "question": "What projects has Suprith worked on?",
+        "top_k": 5,
+        "temperature": 0.4
+    }
+    """
+
+    # --------------------------------------------------------
+    # Clean the question
+    # --------------------------------------------------------
 
     question = req.question.strip()
 
@@ -543,15 +668,20 @@ async def query(req: QueryRequest):
             "sources": []
         }
 
-    # Limit top_k
+
+    # --------------------------------------------------------
+    # Limit retrieved chunks
+    # --------------------------------------------------------
+
     top_k = max(
         1,
         min(req.top_k, 10)
     )
 
-    # ─────────────────────────────────────────
-    # 1. Retrieve relevant chunks
-    # ─────────────────────────────────────────
+
+    # ========================================================
+    # STEP 1: RETRIEVE RELEVANT INFORMATION
+    # ========================================================
 
     try:
 
@@ -570,39 +700,40 @@ async def query(req: QueryRequest):
             "answer":
                 "I’m having trouble searching "
                 "the portfolio right now.",
+
             "sources": []
         }
 
-    # ─────────────────────────────────────────
-    # 2. Build prompt
-    # ─────────────────────────────────────────
+
+    # ========================================================
+    # STEP 2: BUILD RAG PROMPT
+    # ========================================================
 
     prompt = build_prompt(
         top_chunks,
         question
     )
 
-    # ─────────────────────────────────────────
-    # 3. Generate answer
-    # ─────────────────────────────────────────
+
+    # ========================================================
+    # STEP 3: GENERATE ANSWER
+    # ========================================================
 
     answer = nvidia_generate(
         prompt,
         temp=req.temperature
     )
 
-    # ─────────────────────────────────────────
-    # 4. Return response
-    # ─────────────────────────────────────────
+
+    # ========================================================
+    # STEP 4: RETURN ANSWER TO FLUTTER
+    # ========================================================
 
     return {
+        "answer": answer,
 
-        "answer":
-            answer,
-
-        "sources":
-            [
-                chunk["id"]
-                for chunk in top_chunks
-            ]
+        "sources": [
+            chunk["id"]
+            for chunk in top_chunks
+        ]
     }
