@@ -1,7 +1,22 @@
 # ============================================================
+# app.py
+#
 # Portfolio RAG API
 #
-# FastAPI + FAISS + NVIDIA Embeddings + NVIDIA LLM
+# FastAPI
+# NVIDIA Embeddings
+# FAISS
+# NVIDIA LLM
+#
+# Designed for:
+#     Flutter Web
+#     Flutter Mobile
+#     Cloud Run
+# ============================================================
+
+
+# ============================================================
+# IMPORTS
 # ============================================================
 
 import os
@@ -24,29 +39,41 @@ from dotenv import load_dotenv
 
 
 # ============================================================
-# LOAD ENVIRONMENT VARIABLES
+# ENVIRONMENT
 # ============================================================
 
 load_dotenv()
 
-NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
 
-# LLM used for generating the final answer
+NVIDIA_API_KEY = os.getenv(
+    "NVIDIA_API_KEY"
+)
+
+
 NVIDIA_MODEL = os.getenv(
     "NVIDIA_MODEL",
     "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
 )
 
-# Embedding model used for both indexing and searching
+
 NVIDIA_EMBED_MODEL = os.getenv(
     "NVIDIA_EMBED_MODEL",
     "nvidia/nemotron-3-embed-1b"
 )
 
-# NVIDIA API endpoints
-EMBED_URL = "https://integrate.api.nvidia.com/v1/embeddings"
 
-CHAT_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
+# ============================================================
+# NVIDIA ENDPOINTS
+# ============================================================
+
+EMBED_URL = (
+    "https://integrate.api.nvidia.com/v1/embeddings"
+)
+
+
+CHAT_URL = (
+    "https://integrate.api.nvidia.com/v1/chat/completions"
+)
 
 
 # ============================================================
@@ -58,60 +85,77 @@ print("Portfolio RAG API")
 print("============================================")
 
 print(
-    "+++ NVIDIA LLM MODEL:",
+    "+++ LLM:",
     NVIDIA_MODEL
 )
 
 print(
-    "+++ NVIDIA EMBEDDING MODEL:",
+    "+++ EMBEDDING:",
     NVIDIA_EMBED_MODEL
 )
 
-# Never print the actual API key
 print(
-    "+++ NVIDIA API KEY PRESENT:",
+    "+++ API KEY PRESENT:",
     bool(NVIDIA_API_KEY)
 )
 
 
 # ============================================================
-# LOAD FAISS INDEX + METADATA
+# LOAD FAISS
 # ============================================================
 
 try:
 
-    index = faiss.read_index("index.faiss")
+    index = faiss.read_index(
+        "index.faiss"
+    )
+
 
     with open(
         "metadata.json",
         "r",
         encoding="utf-8"
     ) as f:
+
         meta = json.load(f)
 
-    print("+++ FAISS index loaded")
-    print("+++ FAISS vectors:", index.ntotal)
-    print("+++ FAISS dimension:", index.d)
+
+    print(
+        "+++ FAISS vectors:",
+        index.ntotal
+    )
+
+    print(
+        "+++ FAISS dimension:",
+        index.d
+    )
+
 
 except Exception as e:
 
-    print("❌ Failed to load FAISS index:")
+    print(
+        "❌ Could not load FAISS index:"
+    )
+
     print(e)
 
     raise
 
 
 # ============================================================
-# FASTAPI APPLICATION
+# FASTAPI
 # ============================================================
 
 app = FastAPI(
-    title="Portfolio Chatbot API",
+
+    title="Suprith M Portfolio API",
+
     description=(
-        "Portfolio RAG chatbot powered by "
-        "NVIDIA Embeddings, FAISS and NVIDIA LLM"
+        "Portfolio RAG API using "
+        "NVIDIA Embeddings + FAISS + NVIDIA LLM"
     ),
-    version="1.0.0"
+
+    version="2.0.0"
 )
 
 
@@ -119,25 +163,33 @@ app = FastAPI(
 # CORS
 # ============================================================
 #
-# This allows your Flutter Web application to call this API.
+# This is required for Flutter Web.
 #
-# For development:
+# During development:
+#
 #     allow_origins=["*"]
 #
-# Once your portfolio is deployed, replace "*" with your
-# actual website domain for better security.
+# Once your website is deployed, you can replace "*"
+# with your real domain.
 # ============================================================
 
 app.add_middleware(
+
     CORSMiddleware,
 
-    allow_origins=["*"],
+    allow_origins=[
+        "*"
+    ],
 
     allow_credentials=False,
 
-    allow_methods=["*"],
+    allow_methods=[
+        "*"
+    ],
 
-    allow_headers=["*"],
+    allow_headers=[
+        "*"
+    ]
 )
 
 
@@ -148,22 +200,35 @@ app.add_middleware(
 class QueryRequest(BaseModel):
 
     question: str = Field(
+
         ...,
+
         min_length=1,
-        max_length=2000,
-        description="Question about Suprith's portfolio"
+
+        max_length=2000
+
     )
+
 
     top_k: int = Field(
+
         default=5,
+
         ge=1,
+
         le=10
+
     )
 
+
     temperature: float = Field(
+
         default=0.4,
+
         ge=0.0,
+
         le=1.0
+
     )
 
 
@@ -184,152 +249,218 @@ class QueryResponse(BaseModel):
 
 @app.get("/")
 def health():
-    """
-    Simple endpoint to check whether the API is running.
-    """
 
     return {
+
         "status": "ok",
-        "service": "Portfolio RAG API",
-        "embedding_model": NVIDIA_EMBED_MODEL,
-        "llm_model": NVIDIA_MODEL,
-        "faiss_vectors": index.ntotal
+
+        "service":
+            "Suprith M Portfolio RAG",
+
+        "embedding_model":
+            NVIDIA_EMBED_MODEL,
+
+        "llm_model":
+            NVIDIA_MODEL,
+
+        "vectors":
+            index.ntotal
+
     }
 
 
 # ============================================================
-# NVIDIA EMBEDDING
+# NVIDIA QUERY EMBEDDING
 # ============================================================
 
-def get_query_embedding(query: str):
+def get_query_embedding(
+    query: str
+):
     """
     Convert the user's question into an embedding.
 
     IMPORTANT:
-    We use input_type="query".
 
-    build_index.py uses input_type="passage"
-    for portfolio documents.
+    Index:
+        input_type="passage"
+
+    Query:
+        input_type="query"
     """
 
     if not NVIDIA_API_KEY:
+
         raise RuntimeError(
             "NVIDIA_API_KEY is not configured."
         )
 
+
     headers = {
-        "Authorization": f"Bearer {NVIDIA_API_KEY}",
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+
+        "Authorization":
+            f"Bearer {NVIDIA_API_KEY}",
+
+        "Content-Type":
+            "application/json",
+
+        "Accept":
+            "application/json"
+
     }
+
 
     payload = {
-        "model": NVIDIA_EMBED_MODEL,
 
-        # NVIDIA expects input as a list
-        "input": [query],
+        "model":
+            NVIDIA_EMBED_MODEL,
 
-        # User question = query
-        "input_type": "query",
+        "input":
+            [query],
 
-        "encoding_format": "float",
+        "input_type":
+            "query",
 
-        "truncate": "END"
+        "encoding_format":
+            "float",
+
+        "truncate":
+            "END"
+
     }
+
 
     try:
 
         response = requests.post(
+
             EMBED_URL,
+
             headers=headers,
+
             json=payload,
+
             timeout=60
+
         )
 
     except RequestException as e:
 
         raise RuntimeError(
-            f"NVIDIA embedding request failed: {e}"
+            f"Embedding request failed: {e}"
         )
+
 
     if response.status_code != 200:
 
         raise RuntimeError(
-            f"NVIDIA embedding API error "
+
+            f"NVIDIA embedding error "
             f"{response.status_code}: "
             f"{response.text}"
+
         )
 
-    try:
 
-        result = response.json()
+    result = response.json()
 
-    except Exception as e:
 
-        raise RuntimeError(
-            f"Invalid JSON from NVIDIA embedding API: {e}"
-        )
+    data = result.get(
+        "data"
+    )
 
-    data = result.get("data")
 
     if not data:
 
         raise RuntimeError(
-            f"No embedding returned by NVIDIA: {result}"
+            f"No embedding returned: {result}"
         )
 
-    # Convert embedding to float32 for FAISS
+
     embedding = np.array(
-        [data[0]["embedding"]],
+
+        [
+            data[0]["embedding"]
+        ],
+
         dtype="float32"
+
     )
 
-    # Normalize because our FAISS index uses
-    # normalized vectors + Inner Product.
-    faiss.normalize_L2(embedding)
+
+    # Normalize query vector.
+    #
+    # This matches the normalization used
+    # while building the FAISS index.
+
+    faiss.normalize_L2(
+        embedding
+    )
+
 
     return embedding
 
 
 # ============================================================
-# FAISS SEARCH
+# SEARCH FAISS
 # ============================================================
 
-def search(query: str, k: int = 5):
+def search(
+    query: str,
+    k: int = 5
+):
     """
-    Search the portfolio vector database.
-
-    Returns the most relevant portfolio chunks.
+    Search portfolio information using FAISS.
     """
 
     # Safety limit
-    k = max(1, min(k, 10))
+    k = max(
+        1,
+        min(k, 10)
+    )
 
-    # Convert user question to vector
-    query_embedding = get_query_embedding(query)
+
+    # Get query vector
+    query_embedding = (
+        get_query_embedding(query)
+    )
+
 
     # Search FAISS
-    distances, indices = index.search(
-        query_embedding,
-        k
+    distances, indices = (
+        index.search(
+            query_embedding,
+            k
+        )
     )
+
 
     results = []
 
+
     for distance, idx in zip(
+
         distances[0],
+
         indices[0]
+
     ):
 
         if idx < 0:
             continue
 
+
         result = meta[idx].copy()
 
-        # Similarity score
-        result["score"] = float(distance)
 
-        results.append(result)
+        result["score"] = float(
+            distance
+        )
+
+
+        results.append(
+            result
+        )
+
 
     return results
 
@@ -338,94 +469,147 @@ def search(query: str, k: int = 5):
 # SYSTEM PROMPT
 # ============================================================
 #
-# This is intentionally concise.
+# This prompt is intentionally concise.
 #
-# The goal is NOT to make the model repeat the retrieved
-# chunks. It should understand the question and synthesize
-# an answer from the relevant information.
+# We don't want to waste tokens.
+#
+# The important improvement comes from structured retrieval
+# metadata in build_index.py.
 # ============================================================
 
 SYSTEM_PROMPT = """
-You are PortfolioAssistant, a friendly and factual assistant
-for Suprith M's professional portfolio.
+You are PortfolioAssistant for Suprith M's professional portfolio.
 
 Use ONLY the information provided in CONTEXT.
 
-Your job is to answer the user's QUESTION, not to repeat or
-dump the retrieved CONTEXT.
+Answer the user's question directly and completely.
+Do not simply copy or dump retrieved content.
 
-Understand the question first, identify the relevant information,
-and synthesize it into a clear, complete, natural response.
+IMPORTANT:
 
-When multiple relevant pieces of information are available,
-combine them into a coherent answer.
+1. Always distinguish CURRENT employment from PREVIOUS employment
+   using the employment dates and section names.
 
-If the question asks for an explanation, explain using the
-available context rather than simply listing names.
+2. Morgan Stanley is Suprith's current company.
+   The portfolio currently provides his role, domain, team and
+   technology stack there, but does NOT provide specific Morgan Stanley
+   project descriptions.
 
-If the question asks for projects, mention the relevant projects
-and briefly explain them when the context provides enough detail.
+3. Mbb Labs Pvt Ltd (Product Division, Maybank) is his previous company.
+   Projects under "Work Projects — Mbb Labs Pvt Ltd" belong to Mbb Labs,
+   NOT Morgan Stanley.
 
-Do not invent technologies, responsibilities, achievements,
-dates, companies, project details, or other information.
+4. Never attribute a project to a company unless the CONTEXT explicitly
+   associates that project with the company.
 
-Do not mention the retrieval process or say:
-"Based on the context..."
-"According to the context..."
-"The retrieved information..."
+5. Projects under "Hobby & Open Source Projects" are personal/open-source
+   projects and must not be presented as employment projects.
 
-If the answer cannot be determined from the CONTEXT, respond exactly:
+6. If the user asks about current Morgan Stanley projects and the context
+   contains no Morgan Stanley project details, explicitly say that the
+   portfolio does not currently provide specific project details for
+   Morgan Stanley. You may provide the available Morgan Stanley role,
+   domain, team and technology information instead.
+
+7. If the user asks about Mbb Labs projects, provide only the projects
+   associated with Mbb Labs.
+
+8. If a question mentions both current and previous companies, clearly
+   distinguish them instead of combining their projects.
+
+9. Synthesize information into a useful answer. Do not merely return
+   project names or raw retrieved text.
+
+10. Never invent project names, responsibilities, technologies, dates,
+    achievements or company associations.
+
+11. Do not mention the retrieval process or say:
+    "Based on the context..."
+    "According to the context..."
+
+If the requested information cannot be determined from the CONTEXT,
+respond:
 
 "I’m not sure about that — please check the portfolio or feel free to get in touch with Suprith M."
 """
 
 
 # ============================================================
-# BUILD RAG PROMPT
+# BUILD PROMPT
 # ============================================================
 
-def build_prompt(chunks, question):
+def build_prompt(
+    chunks,
+    question
+):
     """
-    Creates the final prompt sent to the LLM.
+    Build the final prompt.
+
+    We include the metadata so the model knows
+    which company/section/project each chunk belongs to.
     """
 
     context_parts = []
 
+
     for chunk in chunks:
 
         context_parts.append(
-            f"[{chunk['id']}]\n"
-            f"{chunk['text']}"
+
+            f"""
+[SOURCE]
+ID: {chunk.get("id", "")}
+
+SECTION:
+{chunk.get("section", "")}
+
+COMPANY:
+{chunk.get("company", "")}
+
+PROJECT:
+{chunk.get("project", "")}
+
+CONTENT:
+{chunk.get("text", "")}
+""".strip()
+
         )
 
-    context = "\n\n".join(context_parts)
+
+    context = "\n\n".join(
+        context_parts
+    )
+
 
     return f"""
 CONTEXT:
+
 {context}
 
-QUESTION:
+USER QUESTION:
+
 {question}
 
-Answer the QUESTION using the CONTEXT.
-Synthesize the information into a useful response.
-Do not simply copy the CONTEXT.
+Answer the USER QUESTION using only the CONTEXT.
+
+Synthesize the relevant information.
+Do not simply repeat the context.
 """
 
 
 # ============================================================
-# NVIDIA LLM GENERATION
+# NVIDIA LLM
 # ============================================================
 
 def nvidia_generate(
     prompt,
-    temp=0.4,
+    temperature=0.4,
     max_tokens=1024,
     retries=2,
     backoff=1.5
 ):
     """
-    Send the RAG prompt to NVIDIA's chat completion API.
+    Send prompt to NVIDIA's LLM endpoint.
     """
 
     if not NVIDIA_API_KEY:
@@ -434,62 +618,96 @@ def nvidia_generate(
             "NVIDIA_API_KEY is not configured."
         )
 
+
     headers = {
-        "Authorization": f"Bearer {NVIDIA_API_KEY}",
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+
+        "Authorization":
+            f"Bearer {NVIDIA_API_KEY}",
+
+        "Content-Type":
+            "application/json",
+
+        "Accept":
+            "application/json"
+
     }
+
 
     payload = {
 
-        "model": NVIDIA_MODEL,
+        "model":
+            NVIDIA_MODEL,
 
         "messages": [
 
             {
-                "role": "system",
-                "content": SYSTEM_PROMPT
+
+                "role":
+                    "system",
+
+                "content":
+                    SYSTEM_PROMPT
+
             },
 
             {
-                "role": "user",
-                "content": prompt
+
+                "role":
+                    "user",
+
+                "content":
+                    prompt
+
             }
 
         ],
 
-        "temperature": temp,
+        "temperature":
+            temperature,
 
-        "max_tokens": max_tokens,
+        "max_tokens":
+            max_tokens,
 
-        "stream": False
+        "stream":
+            False
+
     }
 
 
     # ========================================================
-    # RETRY LOOP
+    # RETRY
     # ========================================================
 
     for attempt in range(
+
         1,
+
         retries + 1
+
     ):
 
         try:
 
             response = requests.post(
+
                 CHAT_URL,
+
                 headers=headers,
+
                 json=payload,
+
                 timeout=120
+
             )
+
 
         except RequestException as e:
 
             print(
-                f"[NVIDIA] Request exception "
-                f"(attempt {attempt}): {e}"
+                f"[NVIDIA] Request error "
+                f"attempt={attempt}: {e}"
             )
+
 
             if attempt < retries:
 
@@ -499,13 +717,18 @@ def nvidia_generate(
 
                 continue
 
-            return f"Request error: {e}"
+
+            return (
+                f"Request error: {e}"
+            )
 
 
         print(
+
             f"[NVIDIA] status="
             f"{response.status_code} "
             f"attempt={attempt}"
+
         )
 
 
@@ -519,13 +742,18 @@ def nvidia_generate(
 
                 data = response.json()
 
+
                 answer = (
+
                     data["choices"][0]
                     ["message"]["content"]
                     .strip()
+
                 )
 
+
                 return answer
+
 
             except Exception as e:
 
@@ -533,35 +761,42 @@ def nvidia_generate(
                     f"[NVIDIA] Parse error: {e}"
                 )
 
+
                 return response.text
 
 
         # ====================================================
-        # AUTHENTICATION
+        # AUTH ERROR
         # ====================================================
 
-        elif response.status_code in (
+        if response.status_code in (
+
             401,
+
             403
+
         ):
 
             return (
-                f"Authentication error "
-                f"{response.status_code}: "
-                "check NVIDIA_API_KEY"
+
+                "Authentication error. "
+                "Please check NVIDIA_API_KEY."
+
             )
 
 
         # ====================================================
-        # MODEL NO LONGER AVAILABLE
+        # MODEL DEPRECATED
         # ====================================================
 
-        elif response.status_code == 410:
+        if response.status_code == 410:
 
             return (
-                f"NVIDIA model "
+
+                f"The NVIDIA model "
                 f"'{NVIDIA_MODEL}' "
                 "is no longer available."
+
             )
 
 
@@ -569,11 +804,12 @@ def nvidia_generate(
         # RATE LIMIT
         # ====================================================
 
-        elif response.status_code == 429:
+        if response.status_code == 429:
 
             print(
-                "[NVIDIA] Rate limited."
+                "[NVIDIA] Rate limit reached."
             )
+
 
             if attempt < retries:
 
@@ -583,21 +819,25 @@ def nvidia_generate(
 
                 continue
 
+
             return (
+
                 "NVIDIA API rate limit reached. "
                 "Please try again later."
+
             )
 
 
         # ====================================================
-        # TEMPORARILY UNAVAILABLE
+        # TEMPORARY ERROR
         # ====================================================
 
-        elif response.status_code == 503:
+        if response.status_code == 503:
 
             print(
-                "[NVIDIA] Model temporarily unavailable."
+                "[NVIDIA] Service temporarily unavailable."
             )
+
 
             if attempt < retries:
 
@@ -612,19 +852,22 @@ def nvidia_generate(
         # OTHER ERROR
         # ====================================================
 
-        else:
+        print(
 
-            print(
-                f"[NVIDIA] Unexpected "
-                f"{response.status_code}: "
-                f"{response.text[:500]}"
-            )
+            f"[NVIDIA] Unexpected "
+            f"{response.status_code}: "
+            f"{response.text[:500]}"
 
-            return (
-                f"NVIDIA API error "
-                f"{response.status_code}: "
-                f"{response.text[:500]}"
-            )
+        )
+
+
+        return (
+
+            f"NVIDIA API error "
+            f"{response.status_code}: "
+            f"{response.text[:500]}"
+
+        )
 
 
     return (
@@ -633,62 +876,66 @@ def nvidia_generate(
 
 
 # ============================================================
-# MAIN QUERY ENDPOINT
+# QUERY ENDPOINT
 # ============================================================
 
 @app.post(
     "/query",
     response_model=QueryResponse
 )
-async def query(req: QueryRequest):
+async def query(
+    req: QueryRequest
+):
     """
     Main RAG endpoint.
 
-    Flutter sends:
-
-    POST /query
+    Example request:
 
     {
-        "question": "What projects has Suprith worked on?",
-        "top_k": 5,
+        "question":
+            "Which is his current company and what projects
+             did he work on at his previous company?",
+
+        "top_k": 6,
+
         "temperature": 0.4
     }
     """
 
     # --------------------------------------------------------
-    # Clean the question
+    # Clean question
     # --------------------------------------------------------
 
     question = req.question.strip()
 
+
     if not question:
 
         return {
-            "answer": "Please enter a question.",
-            "sources": []
+
+            "answer":
+                "Please enter a question.",
+
+            "sources":
+                []
+
         }
 
 
     # --------------------------------------------------------
-    # Limit retrieved chunks
+    # Search
     # --------------------------------------------------------
-
-    top_k = max(
-        1,
-        min(req.top_k, 10)
-    )
-
-
-    # ========================================================
-    # STEP 1: RETRIEVE RELEVANT INFORMATION
-    # ========================================================
 
     try:
 
         top_chunks = search(
+
             question,
-            top_k
+
+            req.top_k
+
         )
+
 
     except Exception as e:
 
@@ -696,44 +943,58 @@ async def query(req: QueryRequest):
             f"[SEARCH ERROR] {e}"
         )
 
+
         return {
+
             "answer":
                 "I’m having trouble searching "
                 "the portfolio right now.",
 
-            "sources": []
+            "sources":
+                []
+
         }
 
 
-    # ========================================================
-    # STEP 2: BUILD RAG PROMPT
-    # ========================================================
+    # --------------------------------------------------------
+    # Build prompt
+    # --------------------------------------------------------
 
     prompt = build_prompt(
+
         top_chunks,
+
         question
+
     )
 
 
-    # ========================================================
-    # STEP 3: GENERATE ANSWER
-    # ========================================================
+    # --------------------------------------------------------
+    # Generate answer
+    # --------------------------------------------------------
 
     answer = nvidia_generate(
+
         prompt,
-        temp=req.temperature
+
+        temperature=req.temperature
+
     )
 
 
-    # ========================================================
-    # STEP 4: RETURN ANSWER TO FLUTTER
-    # ========================================================
+    # --------------------------------------------------------
+    # Return
+    # --------------------------------------------------------
 
     return {
-        "answer": answer,
 
-        "sources": [
-            chunk["id"]
-            for chunk in top_chunks
-        ]
+        "answer":
+            answer,
+
+        "sources":
+            [
+                chunk["id"]
+                for chunk in top_chunks
+            ]
+
     }

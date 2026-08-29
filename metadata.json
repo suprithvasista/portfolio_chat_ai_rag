@@ -1,32 +1,162 @@
 [
   {
-    "id": "sample_portfolio.md__0",
+    "id": "sample_portfolio.md__Cloudera_Data_Platform_(CDP)_Migration",
     "source": "sample_portfolio.md",
-    "text": "# Suprith M — Portfolio ## About I am a Senior Product Data Engineer with 3.6 years of experience focused on building scalable data pipelines using Big Data Tech Stack like Spark, Databricks, and Azure Cloud. ## Current Professional Experience — Morgan Stanley from 16-oct-2025 to present - Role: Software Engineer Level 2 - Duration: Oct-2025 to Present - Domain: Banking(Wealth Management Product Technology) - Team: Lending - Project Management Framework: Agle - TechStack: Big Data, Hadoop , Pyspark,Spark ,Shell Scripting, Snowflake WareHouse, Teradata Warehouse, Ibm DB2, MS Sql Server, Bit bucket, Jenkins ## Professional Experience — Mbb Labs Pvt Ltd (Product Division, Maybank) from jun-2022 to 15-oct-2025 - Role: Senior Product Data Engineer (0.7 years) and Product Data Engineer (2.1 years) and Product Data Engineer Intern (0.9 year) - Duration: 3.5 years (including 8 months internship) - Domain: Banking - Teams: UDL(Universal Data Lake),Profitability Management,BCBS(Basel Committee on Banking Stabilization),Net Zero Carbon Cities - Project Management Framework: Agile and Kanban - I have worked on building large-scale data pipelines, ETL frameworks, and AI-assisted automation tools for data quality, reconciliation, and reporting systems. My work primarily involved Python, PySpark, Hive, Scala, and Oracle, with a focus on performance optimization, data governance,"
+    "section": "Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "company": "Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "project": "Cloudera Data Platform (CDP) Migration",
+    "text": "Source: sample_portfolio.md\n\nSection: Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nCompany: Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nProject: Cloudera Data Platform (CDP) Migration\n\nDetails:\n- Led the migration of critical data workloads from on-premises infrastructure to Cloudera Data Platform (CDP).\n- Ensured minimal downtime and zero data loss through a phased migration strategy and rigorous validation process.\n- Implemented optimized Spark, Hive, and Ozone configurations for improved performance and scalability.\n- Delivered a highly available, scalable architecture capable of supporting future data growth and advanced analytics use cases.\n- Delivered an alternative solution for BDSQL replacement by testing and signing off the IBM BigSQL utility as the approved replacement\n- Technologies: Cloudera CDP, Hadoop, Spark, Ozone, Unix."
   },
   {
-    "id": "sample_portfolio.md__1",
+    "id": "sample_portfolio.md__Slowly_Changing_Dimension_(SCD)_&_Recovery_Framework",
     "source": "sample_portfolio.md",
-    "text": "and AI-driven innovation. ## Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank) - Project: Cloudera Data Platform (CDP) Migration - Led the migration of critical data workloads from on-premises infrastructure to Cloudera Data Platform (CDP). - Ensured minimal downtime and zero data loss through a phased migration strategy and rigorous validation process. - Implemented optimized Spark, Hive, and Ozone configurations for improved performance and scalability. - Delivered a highly available, scalable architecture capable of supporting future data growth and advanced analytics use cases. - Delivered an alternative solution for BDSQL replacement by testing and signing off the IBM BigSQL utility as the approved replacement - Technologies: Cloudera CDP, Hadoop, Spark, Ozone, Unix. - Project: Slowly Changing Dimension (SCD) & Recovery Framework - Built data pipelines for maintaining historical dimension data (SCD Type 2). - Improved ETL performance from 2h45m to 16m using architectural optimizations. - Technologies: Python, PySpark, Hive. - Designed an exit-code mechanism and active-passive write strategy for zero downtime. - Project: Incremental & Incremental Recovery Framework - Designed and developed a new engine to process only changed data between loads. - Reduced job runtime by 45+ minutes through selective write logic. - Implemented data validation and"
+    "section": "Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "company": "Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "project": "Slowly Changing Dimension (SCD) & Recovery Framework",
+    "text": "Source: sample_portfolio.md\n\nSection: Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nCompany: Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nProject: Slowly Changing Dimension (SCD) & Recovery Framework\n\nDetails:\n- Built data pipelines for maintaining historical dimension data (SCD Type 2).\n- Improved ETL performance from 2h45m to 16m using architectural optimizations.\n- Technologies: Python, PySpark, Hive.\n- Designed an exit-code mechanism and active-passive write strategy for zero downtime."
   },
   {
-    "id": "sample_portfolio.md__2",
+    "id": "sample_portfolio.md__Incremental_&_Incremental_Recovery_Framework",
     "source": "sample_portfolio.md",
-    "text": "exclusion configurations for technical columns. - Technologies: Python, PySpark, Hive. - Project: Currency & Measures Computation - Developed scalable framework for cross-currency conversions and KPI calculations. - Enhanced performance using Spark caching and configuration-driven computations. - Technologies: Scala, Spark, Hive. - Project: Oracle Data Integrator (ODI) - Built and automated ETL pipelines for fact table loads using ODI mappings. - Created outbound automation using Jython + odisqlunload to export data for downstream apps. - Designed error-tracking and metadata extraction modules to simplify debugging. - Project: PySpark Data Quality Framework - Migrated PL/SQL-based data quality checks to PySpark. - Implemented checks: duplicates, LOV, not null, referential integrity. - Reduced DQ batch runtime from 30h to 2h15m. - Technologies: Python, PySpark, Hive, HDFS. - Project: Reconciliation Framework Engine - Built reconciliation framework for cross-system validation (Teradata ↔ Hive). - Enabled end-to-end reconciliation through balance and attribute-level comparisons. - Technologies: Python, PySpark, Hive, Oracle, Teradata. - Project: Data Archival Framework - Created archival framework in Scala and PL/SQL for Hive and Oracle. - Automated truncation and archival logic using config-driven parameters. - Supported partition-based archival for annual data retention. ## Hobby & Open Source Projects - Project: Recursive Job Matching (RJM) - AI-powered"
+    "section": "Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "company": "Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "project": "Incremental & Incremental Recovery Framework",
+    "text": "Source: sample_portfolio.md\n\nSection: Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nCompany: Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nProject: Incremental & Incremental Recovery Framework\n\nDetails:\n- Designed and developed a new engine to process only changed data between loads.\n- Reduced job runtime by 45+ minutes through selective write logic.\n- Implemented data validation and exclusion configurations for technical columns.\n- Technologies: Python, PySpark, Hive."
   },
   {
-    "id": "sample_portfolio.md__3",
+    "id": "sample_portfolio.md__Currency_&_Measures_Computation",
     "source": "sample_portfolio.md",
-    "text": "resume matcher using Python + Streamlit + Gemini API. - Fetches job data via APIs and compares with uploaded resumes. - Generates detailed feedback reports with download option. - Project: Streamlit Custom File Path Loader - Developed a custom Streamlit widget to fetch file metadata. - Uses Tkinter dialog for file upload, maintains session state. - Published to PyPI as Streamlit-Filepath-Loader. - Project: Pandas Consolidation Library - Library for merging and transposing Excel files using Pandas. - Includes error handling, config-based transformations, and Excel writers. - Available on PyPI as Pandas-Consolidated-Loader. - Project: Portfolio Generator and Enhancer - Built a Streamlit-based AI tool to auto-generate and deploy developer portfolios. - Integrates with GitHub, Vercel, BigQuery, and Gemini API for end-to-end automation. - Features profile management, project enhancement, and dynamic deployment. - Project: Custom GPT Architecture and Language Model - Designed and trained a custom GPT-like transformer model from scratch using open-source books as the training corpus. - Implemented end-to-end data preprocessing, model architecture, and vocabulary generation pipelines. - Achieved training loss of 0.50 (≈60%) and validation loss of 0.59 (≈55%) within limited training iterations. - Focused on optimizing tokenization, embedding representation, and attention mechanisms for language understanding. - Future Work:"
+    "section": "Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "company": "Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "project": "Currency & Measures Computation",
+    "text": "Source: sample_portfolio.md\n\nSection: Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nCompany: Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nProject: Currency & Measures Computation\n\nDetails:\n- Developed scalable framework for cross-currency conversions and KPI calculations.\n- Enhanced performance using Spark caching and configuration-driven computations.\n- Technologies: Scala, Spark, Hive."
   },
   {
-    "id": "sample_portfolio.md__4",
+    "id": "sample_portfolio.md__Oracle_Data_Integrator_(ODI)",
     "source": "sample_portfolio.md",
-    "text": "Expanding the model for domain-specific RAG (Retrieval-Augmented Generation) by training on user-related documents to enhance contextual Q&A and summarization capabilities. - Technologies: Python, PyTorch, Transformers, Tokenizers, NumPy. - Repo Includes: Preprocessing scripts, architecture design, training dataset, and vocabulary builder. - Project: Spark-SQL Optimiser - pyspark open source talks to integrate into official pyspark code base - Developed a SQL optimization framework that analyzes query metadata and automatically rewrites Spark SQL scripts for improved performance. - Metadata Extraction: Reads SQL metadata from Excel configuration files. - Source Analysis (Class 2): - Identifies join keys and potential data skew in source tables. - Detects imbalance across partitions to guide optimization. - Histogram Generation (Class 3): - Classifies columns into skewed and non-skewed categories. - Generates detailed histograms and exports them as PDFs for reference. - Query Optimization (Class 1): - Applies Common Table Expressions (CTEs) and grouped skew handling logic. - Optimizes joins using string concatenation techniques to manage skewed data efficiently. - Outputs an optimized SQL script ready for execution in Spark or Hive. - Impact: Reduces query runtime and mitigates data skew, leading to more balanced distributed processing. - Technologies: Python, PySpark, Spark SQL, Pandas, OpenPyXL, Matplotlib. ## Achievements -"
+    "section": "Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "company": "Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "project": "Oracle Data Integrator (ODI)",
+    "text": "Source: sample_portfolio.md\n\nSection: Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nCompany: Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nProject: Oracle Data Integrator (ODI)\n\nDetails:\n- Built and automated ETL pipelines for fact table loads using ODI mappings.\n- Created outbound automation using Jython + odisqlunload to export data for downstream apps.\n- Designed error-tracking and metadata extraction modules to simplify debugging."
   },
   {
-    "id": "sample_portfolio.md__5",
+    "id": "sample_portfolio.md__PySpark_Data_Quality_Framework",
     "source": "sample_portfolio.md",
-    "text": "Google Cloud Innovator Club Member — Earned membership through a competitive Google Generative AI Hackathon, showcasing innovative problem-solving and deep technical expertise in AI-driven solutions. - Top Candidate – LLM Agents Hackathon (UC Berkeley RDI) — Recognized among the top participants in the global LLM Agents Hackathon, organized in collaboration with UC Berkeley’s Research, Development & Innovation division and the LLM Agents MOOC. - Star Performer Awards — Honored multiple times for outstanding sprint performance, delivering critical features ahead of deadlines with exceptional quality and innovation. - Most Dependable Developer” Award — Recognized for reliability, ownership, and consistent delivery of high-performance data engineering solutions across multiple sprints and complex project lifecycles."
+    "section": "Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "company": "Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "project": "PySpark Data Quality Framework",
+    "text": "Source: sample_portfolio.md\n\nSection: Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nCompany: Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nProject: PySpark Data Quality Framework\n\nDetails:\n- Migrated PL/SQL-based data quality checks to PySpark.\n- Implemented checks: duplicates, LOV, not null, referential integrity.\n- Reduced DQ batch runtime from 30h to 2h15m.\n- Technologies: Python, PySpark, Hive, HDFS."
+  },
+  {
+    "id": "sample_portfolio.md__Reconciliation_Framework_Engine",
+    "source": "sample_portfolio.md",
+    "section": "Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "company": "Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "project": "Reconciliation Framework Engine",
+    "text": "Source: sample_portfolio.md\n\nSection: Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nCompany: Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nProject: Reconciliation Framework Engine\n\nDetails:\n- Built reconciliation framework for cross-system validation (Teradata ↔ Hive).\n- Enabled end-to-end reconciliation through balance and attribute-level comparisons.\n- Technologies: Python, PySpark, Hive, Oracle, Teradata."
+  },
+  {
+    "id": "sample_portfolio.md__Data_Archival_Framework",
+    "source": "sample_portfolio.md",
+    "section": "Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "company": "Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "project": "Data Archival Framework",
+    "text": "Source: sample_portfolio.md\n\nSection: Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nCompany: Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nProject: Data Archival Framework\n\nDetails:\n- Created archival framework in Scala and PL/SQL for Hive and Oracle.\n- Automated truncation and archival logic using config-driven parameters.\n- Supported partition-based archival for annual data retention."
+  },
+  {
+    "id": "sample_portfolio.md__Recursive_Job_Matching_(RJM)",
+    "source": "sample_portfolio.md",
+    "section": "Hobby & Open Source Projects",
+    "company": "Hobby & Open Source",
+    "project": "Recursive Job Matching (RJM)",
+    "text": "Source: sample_portfolio.md\n\nSection: Hobby & Open Source Projects\n\nCompany: Hobby & Open Source\n\nProject: Recursive Job Matching (RJM)\n\nDetails:\n- AI-powered resume matcher using Python + Streamlit + Gemini API.\n- Fetches job data via APIs and compares with uploaded resumes.\n- Generates detailed feedback reports with download option."
+  },
+  {
+    "id": "sample_portfolio.md__Streamlit_Custom_File_Path_Loader",
+    "source": "sample_portfolio.md",
+    "section": "Hobby & Open Source Projects",
+    "company": "Hobby & Open Source",
+    "project": "Streamlit Custom File Path Loader",
+    "text": "Source: sample_portfolio.md\n\nSection: Hobby & Open Source Projects\n\nCompany: Hobby & Open Source\n\nProject: Streamlit Custom File Path Loader\n\nDetails:\n- Developed a custom Streamlit widget to fetch file metadata.\n- Uses Tkinter dialog for file upload, maintains session state.\n- Published to PyPI as Streamlit-Filepath-Loader."
+  },
+  {
+    "id": "sample_portfolio.md__Pandas_Consolidation_Library",
+    "source": "sample_portfolio.md",
+    "section": "Hobby & Open Source Projects",
+    "company": "Hobby & Open Source",
+    "project": "Pandas Consolidation Library",
+    "text": "Source: sample_portfolio.md\n\nSection: Hobby & Open Source Projects\n\nCompany: Hobby & Open Source\n\nProject: Pandas Consolidation Library\n\nDetails:\n- Library for merging and transposing Excel files using Pandas.\n- Includes error handling, config-based transformations, and Excel writers.\n- Available on PyPI as Pandas-Consolidated-Loader."
+  },
+  {
+    "id": "sample_portfolio.md__Portfolio_Generator_and_Enhancer",
+    "source": "sample_portfolio.md",
+    "section": "Hobby & Open Source Projects",
+    "company": "Hobby & Open Source",
+    "project": "Portfolio Generator and Enhancer",
+    "text": "Source: sample_portfolio.md\n\nSection: Hobby & Open Source Projects\n\nCompany: Hobby & Open Source\n\nProject: Portfolio Generator and Enhancer\n\nDetails:\n- Built a Streamlit-based AI tool to auto-generate and deploy developer portfolios.\n- Integrates with GitHub, Vercel, BigQuery, and Gemini API for end-to-end automation.\n- Features profile management, project enhancement, and dynamic deployment."
+  },
+  {
+    "id": "sample_portfolio.md__Custom_GPT_Architecture_and_Language_Model",
+    "source": "sample_portfolio.md",
+    "section": "Hobby & Open Source Projects",
+    "company": "Hobby & Open Source",
+    "project": "Custom GPT Architecture and Language Model",
+    "text": "Source: sample_portfolio.md\n\nSection: Hobby & Open Source Projects\n\nCompany: Hobby & Open Source\n\nProject: Custom GPT Architecture and Language Model\n\nDetails:\n- Designed and trained a custom GPT-like transformer model from scratch using open-source books as the training corpus.\n- Implemented end-to-end data preprocessing, model architecture, and vocabulary generation pipelines.\n- Achieved training loss of 0.50 (≈60%) and validation loss of 0.59 (≈55%) within limited training iterations.\n- Focused on optimizing tokenization, embedding representation, and attention mechanisms for language understanding.\n- Future Work: Expanding the model for domain-specific RAG (Retrieval-Augmented Generation) by training on user-related documents to enhance contextual Q&A and summarization capabilities.\n- Technologies: Python, PyTorch, Transformers, Tokenizers, NumPy.\n- Repo Includes: Preprocessing scripts, architecture design, training dataset, and vocabulary builder."
+  },
+  {
+    "id": "sample_portfolio.md__Spark-SQL_Optimiser",
+    "source": "sample_portfolio.md",
+    "section": "Hobby & Open Source Projects",
+    "company": "Hobby & Open Source",
+    "project": "Spark-SQL Optimiser",
+    "text": "Source: sample_portfolio.md\n\nSection: Hobby & Open Source Projects\n\nCompany: Hobby & Open Source\n\nProject: Spark-SQL Optimiser\n\nDetails:\n- pyspark open source talks to integrate into official pyspark code base\n- Developed a SQL optimization framework that analyzes query metadata and automatically rewrites Spark SQL scripts for improved performance.\n- Metadata Extraction: Reads SQL metadata from Excel configuration files.\n- Source Analysis (Class 2):\n- Identifies join keys and potential data skew in source tables.\n- Detects imbalance across partitions to guide optimization.\n- Histogram Generation (Class 3):\n- Classifies columns into skewed and non-skewed categories.\n- Generates detailed histograms and exports them as PDFs for reference.\n- Query Optimization (Class 1):\n- Applies Common Table Expressions (CTEs) and grouped skew handling logic.\n- Optimizes joins using string concatenation techniques to manage skewed data efficiently.\n- Outputs an optimized SQL script ready for execution in Spark or Hive.\n- Impact: Reduces query runtime and mitigates data skew, leading to more balanced distributed processing.\n- Technologies: Python, PySpark, Spark SQL, Pandas, OpenPyXL, Matplotlib."
+  },
+  {
+    "id": "sample_portfolio.md__section__About",
+    "source": "sample_portfolio.md",
+    "section": "About",
+    "company": "",
+    "project": "",
+    "text": "Source: sample_portfolio.md\n\nSection: About\n\nCompany: \n\nDetails:\nI am a Senior Product Data Engineer with 3.6 years of experience focused on building scalable data pipelines using Big Data Tech Stack like Spark, Databricks, and Azure Cloud."
+  },
+  {
+    "id": "sample_portfolio.md__section__Current_Professional_Experience_—_Morgan_Stanley_from_16-oct-2025_to_present",
+    "source": "sample_portfolio.md",
+    "section": "Current Professional Experience — Morgan Stanley from 16-oct-2025 to present",
+    "company": "Morgan Stanley",
+    "project": "",
+    "text": "Source: sample_portfolio.md\n\nSection: Current Professional Experience — Morgan Stanley from 16-oct-2025 to present\n\nCompany: Morgan Stanley\n\nDetails:\n- Role: Software Engineer Level 2\n- Duration: Oct-2025 to Present\n- Domain: Banking(Wealth Management Product Technology)\n- Team: Lending\n- Project Management Framework: Agle\n- TechStack: Big Data, Hadoop , Pyspark,Spark ,Shell Scripting, Snowflake WareHouse, Teradata Warehouse, Ibm DB2, MS Sql Server, Bit bucket, Jenkins"
+  },
+  {
+    "id": "sample_portfolio.md__section__Professional_Experience_—_Mbb_Labs_Pvt_Ltd_(Product_Division,_Maybank)_from_jun-2022_to_15-oct-2025",
+    "source": "sample_portfolio.md",
+    "section": "Professional Experience — Mbb Labs Pvt Ltd (Product Division, Maybank) from jun-2022 to 15-oct-2025",
+    "company": "Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "project": "",
+    "text": "Source: sample_portfolio.md\n\nSection: Professional Experience — Mbb Labs Pvt Ltd (Product Division, Maybank) from jun-2022 to 15-oct-2025\n\nCompany: Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nDetails:\n- Role: Senior Product Data Engineer (0.7 years) and Product Data Engineer (2.1 years) and Product Data Engineer Intern (0.9 year)\n- Duration: 3.5 years (including 8 months internship)\n- Domain: Banking\n- Teams: UDL(Universal Data Lake),Profitability Management,BCBS(Basel Committee on Banking Stabilization),Net Zero Carbon Cities\n- Project Management Framework: Agile and Kanban\n- I have worked on building large-scale data pipelines, ETL frameworks, and AI-assisted automation tools for data quality, reconciliation, and reporting systems. My work primarily involved Python, PySpark, Hive, Scala, and Oracle, with a focus on performance optimization, data governance, and AI-driven innovation."
+  },
+  {
+    "id": "sample_portfolio.md__section__Work_Projects_—_Mbb_Labs_Pvt_Ltd_(Product_Division,_Maybank)",
+    "source": "sample_portfolio.md",
+    "section": "Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "company": "Mbb Labs Pvt Ltd (Product Division, Maybank)",
+    "project": "",
+    "text": "Source: sample_portfolio.md\n\nSection: Work Projects — Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nCompany: Mbb Labs Pvt Ltd (Product Division, Maybank)\n\nDetails:\n- Led the migration of critical data workloads from on-premises infrastructure to Cloudera Data Platform (CDP).\n- Ensured minimal downtime and zero data loss through a phased migration strategy and rigorous validation process.\n- Implemented optimized Spark, Hive, and Ozone configurations for improved performance and scalability.\n- Delivered a highly available, scalable architecture capable of supporting future data growth and advanced analytics use cases.\n- Delivered an alternative solution for BDSQL replacement by testing and signing off the IBM BigSQL utility as the approved replacement\n- Technologies: Cloudera CDP, Hadoop, Spark, Ozone, Unix.\n- Built data pipelines for maintaining historical dimension data (SCD Type 2).\n- Improved ETL performance from 2h45m to 16m using architectural optimizations.\n- Technologies: Python, PySpark, Hive.\n- Designed an exit-code mechanism and active-passive write strategy for zero downtime.\n- Designed and developed a new engine to process only changed data between loads.\n- Reduced job runtime by 45+ minutes through selective write logic.\n- Implemented data validation and exclusion configurations for technical columns.\n- Technologies: Python, PySpark, Hive.\n- Developed scalable framework for cross-currency conversions and KPI calculations.\n- Enhanced performance using Spark caching and configuration-driven computations.\n- Technologies: Scala, Spark, Hive.\n- Built and automated ETL pipelines for fact table loads using ODI mappings.\n- Created outbound automation using Jython + odisqlunload to export data for downstream apps.\n- Designed error-tracking and metadata extraction modules to simplify debugging.\n- Migrated PL/SQL-based data quality checks to PySpark.\n- Implemented checks: duplicates, LOV, not null, referential integrity.\n- Reduced DQ batch runtime from 30h to 2h15m.\n- Technologies: Python, PySpark, Hive, HDFS.\n- Built reconciliation framework for cross-system validation (Teradata ↔ Hive).\n- Enabled end-to-end reconciliation through balance and attribute-level comparisons.\n- Technologies: Python, PySpark, Hive, Oracle, Teradata.\n- Created archival framework in Scala and PL/SQL for Hive and Oracle.\n- Automated truncation and archival logic using config-driven parameters.\n- Supported partition-based archival for annual data retention."
+  },
+  {
+    "id": "sample_portfolio.md__section__Hobby_&_Open_Source_Projects",
+    "source": "sample_portfolio.md",
+    "section": "Hobby & Open Source Projects",
+    "company": "Hobby & Open Source",
+    "project": "",
+    "text": "Source: sample_portfolio.md\n\nSection: Hobby & Open Source Projects\n\nCompany: Hobby & Open Source\n\nDetails:\n- AI-powered resume matcher using Python + Streamlit + Gemini API.\n- Fetches job data via APIs and compares with uploaded resumes.\n- Generates detailed feedback reports with download option.\n- Developed a custom Streamlit widget to fetch file metadata.\n- Uses Tkinter dialog for file upload, maintains session state.\n- Published to PyPI as Streamlit-Filepath-Loader.\n- Library for merging and transposing Excel files using Pandas.\n- Includes error handling, config-based transformations, and Excel writers.\n- Available on PyPI as Pandas-Consolidated-Loader.\n- Built a Streamlit-based AI tool to auto-generate and deploy developer portfolios.\n- Integrates with GitHub, Vercel, BigQuery, and Gemini API for end-to-end automation.\n- Features profile management, project enhancement, and dynamic deployment.\n- Designed and trained a custom GPT-like transformer model from scratch using open-source books as the training corpus.\n- Implemented end-to-end data preprocessing, model architecture, and vocabulary generation pipelines.\n- Achieved training loss of 0.50 (≈60%) and validation loss of 0.59 (≈55%) within limited training iterations.\n- Focused on optimizing tokenization, embedding representation, and attention mechanisms for language understanding.\n- Future Work: Expanding the model for domain-specific RAG (Retrieval-Augmented Generation) by training on user-related documents to enhance contextual Q&A and summarization capabilities.\n- Technologies: Python, PyTorch, Transformers, Tokenizers, NumPy.\n- Repo Includes: Preprocessing scripts, architecture design, training dataset, and vocabulary builder.\n- pyspark open source talks to integrate into official pyspark code base\n- Developed a SQL optimization framework that analyzes query metadata and automatically rewrites Spark SQL scripts for improved performance.\n- Metadata Extraction: Reads SQL metadata from Excel configuration files.\n- Source Analysis (Class 2):\n- Identifies join keys and potential data skew in source tables.\n- Detects imbalance across partitions to guide optimization.\n- Histogram Generation (Class 3):\n- Classifies columns into skewed and non-skewed categories.\n- Generates detailed histograms and exports them as PDFs for reference.\n- Query Optimization (Class 1):\n- Applies Common Table Expressions (CTEs) and grouped skew handling logic.\n- Optimizes joins using string concatenation techniques to manage skewed data efficiently.\n- Outputs an optimized SQL script ready for execution in Spark or Hive.\n- Impact: Reduces query runtime and mitigates data skew, leading to more balanced distributed processing.\n- Technologies: Python, PySpark, Spark SQL, Pandas, OpenPyXL, Matplotlib."
+  },
+  {
+    "id": "sample_portfolio.md__section__Achievements",
+    "source": "sample_portfolio.md",
+    "section": "Achievements",
+    "company": "",
+    "project": "",
+    "text": "Source: sample_portfolio.md\n\nSection: Achievements\n\nCompany: \n\nDetails:\n- Google Cloud Innovator Club Member — Earned membership through a competitive Google Generative AI Hackathon, showcasing innovative problem-solving and deep technical expertise in AI-driven solutions.\n- Top Candidate – LLM Agents Hackathon (UC Berkeley RDI) — Recognized among the top participants in the global LLM Agents Hackathon, organized in collaboration with UC Berkeley’s Research, Development & Innovation division and the LLM Agents MOOC.\n- Star Performer Awards — Honored multiple times for outstanding sprint performance, delivering critical features ahead of deadlines with exceptional quality and innovation.\n- Most Dependable Developer” Award — Recognized for reliability, ownership, and consistent delivery of high-performance data engineering solutions across multiple sprints and complex project lifecycles."
   }
 ]
